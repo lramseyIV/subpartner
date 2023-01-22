@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Subscription{% endblock %}
+
+{% block content %}
+
+<div class="columns">
+    <div class="column is-one-third"></div>
+    <div class="column has-text-centered">
+        <form action="/edit/{{sub.id}}" method="POST">
+            {% csrf_token %}
+            <h1 class="subtitle">Edit Subscription</h1>
+            <br>
+        
+           Name <input class="input" value="{{sub.subscription_name}}" type="text" name="subscription_name" required placeholder="Subscription Name"><br><br>
+           Expiration <input value="{{sub.expiration}}" minlength="10" maxlength="10" class="input" type="text" name="expiration" required
+                placeholder="When will the subscription expire? mm/dd/yyyy"><br><br>
+            WhatsApp <input value="{{sub.group_link}}" class="input" type="text" name="group_link" required placeholder="WhatsApp Group Link"><br><br>
+            Cost <input value="{{sub.cost}}" class="input" type="number" name="cost" required
+                placeholder="Cost of Subscription per customer"><br><br>
+            Total Slots <input value="{{sub.slots}}" class="input" type="number" name="slots" required
+                placeholder="Available slots at this price"><br><br>
+                
+                Slots Taken<input value="{{sub.slots_taken}}" class="input" type="number" name="taken" required
+                placeholder="Slots Taken"><br><br>
+                <br><br>
+                <button class="button is-success" type="submit">Submit</button>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li style="color: red; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                </ul>
+                {% endif %}
+        </form>
+        <br><a href="/dashboard"><button class="button is-link">Dashboard</button></a>
+
+    </div>
+    <div class="column"></div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

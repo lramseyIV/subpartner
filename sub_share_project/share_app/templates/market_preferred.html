@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscription Market{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column is-one-third has-text-centered">
+        <h1 class="subtitle">Logged In As {{customer.full_name}} - {{customer.email}}</h1>
+        <p class="content">Viewing Subscriptions for {{customer.preferred_currency}} </p>
+        <a href="/dashboard"><button class="button is-link">Dashboard</button></a>
+        <a href="/marketall"><button class="button is-link">View All Currencies</button></a>
+    </div>
+    <div class="column">
+
+        {% if not subs %} 
+        <p style="text-align: center;" class="subtitle">Sorry, there are no subscriptions with {{customer.preferred_currency}} currency. Click 'View All Currencies' Button.</p>
+        {% else %}
+
+        {% for sub in subs %}
+        {% if sub.slots_available > 0 %}
+        <div class="card">
+            <div style="display:flex;justify-content: space-between;">
+                <div style="text-align: left; display: inline-block;">
+                    <h1 class="title">{{sub.subscription_name}}</h1>
+                    by {{sub.owner.full_name}} - {{sub.owner.email}} <a href="/report/{{sub.owner.email}}/p"><button class="button is-small is-danger">Report</button></a>
+                    <br><strong>Expires: </strong>{{sub.expiration}} <br>
+                    Created - {{sub.created_at}} <br>
+                    Last Updated  - {{sub.updated_at}} <br>
+                    {% if sub.owner.scammer_count > 0 %}
+                    <p style="color: red;">WARNING! User flagged as scammer {{sub.owner.scammer_count}} times</p>
+                    {% endif %}
+                </div>
+
+
+                <div style="text-align: center; display: inline-block;">
+                    <br>
+                    {% if sub.type == 'monthly' %}
+                    <p style="font-size: 20pt; display: inline;">{{sub.cost}} {{sub.currency}}</p> <br> Monthly <br>
+                    <a href="{{sub.group_link}}" target="_blank"><button class="button is-success is-rounded is-large"
+                        onclick="warn()">Join</button></a>
+                    {% else %}
+                    <p style="font-size: 20pt; display: inline;">{{sub.cost}} {{sub.currency}}</p> <br> One Time <br><br>
+                    <a href="{{sub.group_link}}" target="_blank"><button class="button is-success is-rounded is-large"
+                        onclick="warn()">Join</button></a><br>
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+            <p style="font-size: 20pt;"><strong>{{sub.slots_available}}</strong>/{{sub.slots}} Subscription(s)
+                available
+            <p>
+        </div><br>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+    </div>
+    <div class="column"></div>
+</div>
+<script>
+    function warn() {
+        alert('Warning!!! This will take you to what the user placed as their WhatsApp group link. We are not responsible for malicious links. Watch out for scams, we are not responsible for the fulfillment of any subscription for payment.')
+    }
+</script>
+{% endblock %}

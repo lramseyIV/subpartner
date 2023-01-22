@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column is-one-third"></div>
+    <div class="column has-text-centered">
+        <br><br>
+        <h1 class="title">Login to your account</h1>
+        <form action="/login" method="POST">
+            {% csrf_token %}
+            <input style="width: 75%;" class="input is-rounded" name="email" type="email" required
+                placeholder="email"><br><br>
+            <input style="width: 75%;" class="input is-rounded" name="password" type="password" required
+                placeholder="password"><br><br>
+            <button type="submit" class="button is-link is-rounded is-medium">Log In</button>
+        </form>
+        <br>
+        <p>Don't have an account? <a href="/register">Register Now</a></p>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li style="color: red; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="column"></div>
+</div>
+{% endblock %}
